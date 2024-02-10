@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import style from "./user-card.module.scss";
 import type { TUser } from "../../app/main/main";
 import likeIcon from "../../assets/like.svg";
+import Avatar from "../avatar/avatar";
 
 type TUserProps = {
   item: TUser;
@@ -10,15 +11,7 @@ type TUserProps = {
 function UserCard({ item }: TUserProps) {
   return (
     <li className={style.UserCard}>
-      <div className={style.UserCard__imgBlock}>
-        <img
-          src={item.avatar}
-          alt={`${item.first_name} ${item.last_name} аватар`}
-          className={style.UserCard__img}
-          width={124}
-          height={124}
-        />
-      </div>
+      <Avatar item={item} width="124" height="124" />
       <Link
         to={`/user/${item.id}`}
         className={style.UserCard__name}

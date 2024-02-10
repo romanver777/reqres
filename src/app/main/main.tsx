@@ -4,9 +4,11 @@ import Header from "../../components/header/header";
 import MainTitle from "../../components/main-title/main-title";
 import AuthTool from "../../components/auth-tool/auth-tool";
 import Content from "../../components/content/content";
+import MainContent from "../../components/main-content/main-content";
 import List from "../../components/list/list";
 import UserCard from "../../components/user-card/user-card";
 import Pagination from "../../components/pagination/pagination";
+import SideLayout from "../../components/side-layout/side-layout";
 
 export type TUser = {
   id: number;
@@ -41,12 +43,16 @@ function Main() {
   return (
     <PageLayout>
       <Header>
-        <MainTitle />
+        <SideLayout>
+          <MainTitle />
+        </SideLayout>
         <AuthTool />
       </Header>
       <Content>
-        <List items={users} renderItem={renders.userCard} />
-        <Pagination />
+        <MainContent>
+          <List items={users} renderItem={renders.userCard} />
+          <Pagination />
+        </MainContent>
       </Content>
     </PageLayout>
   );
