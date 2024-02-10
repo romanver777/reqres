@@ -1,19 +1,18 @@
 import style from "./auth-tool.module.scss";
+import Button from "../button/button";
 import exitIcon from "../../assets/exit.svg";
 
 function AuthTool() {
   return (
     <div className={style.AuthTool}>
-      <button className={style.AuthTool__btn}>
-        <span className={style.AuthTool__text}>Выход</span>
-        <img
-          src={exitIcon}
-          className={style.AuthTool__img}
-          width={18}
-          height={18}
-          alt="exit icon"
-        />
-      </button>
+      <Button
+        icon={exitIcon}
+        width="18"
+        height="18"
+        title="Выход"
+        position="right"
+        onHandleClick={()=>{}}
+      />
     </div>
   );
 }
