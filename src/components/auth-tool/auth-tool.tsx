@@ -2,7 +2,11 @@ import style from "./auth-tool.module.scss";
 import Button from "../button/button";
 import exitIcon from "../../assets/exit.svg";
 
-function AuthTool() {
+type TAuthTool = {
+  onLogOut: () => void;
+}
+
+function AuthTool({onLogOut}: TAuthTool) {
   return (
     <div className={style.AuthTool}>
       <Button
@@ -11,7 +15,7 @@ function AuthTool() {
         height="18"
         title="Выход"
         position="right"
-        onHandleClick={()=>{}}
+        onHandleClick={onLogOut}
       />
     </div>
   );

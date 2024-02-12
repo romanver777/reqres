@@ -1,5 +1,8 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { loadUser } from "../../store/user/user";
+import { signOut } from "../../store/auth/auth";
 import PageLayout from "../../components/layouts/page-layout/page-layout";
 import Header from "../../components/header/header";
 import NavTool from "../../components/nav-tool/nav-tool";
@@ -9,37 +12,29 @@ import Content from "../../components/content/content";
 import SideLayout from "../../components/layouts/side-layout/side-layout";
 import UserContent from "../../components/user-content/user-content";
 import Message from "../../components/message/message";
-import type { TUser } from "../main/main";
 
 function User() {
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.user.data);
+  const loading = useAppSelector((state) => state.user.loading);
   const { id } = useParams();
-  const [user, setUser] = useState<TUser>();
-
-  const getUser = async (id: string) => {
-    try {
-      const resp = await fetch(`https://reqres.in/api/users/${id}`);
-      const data = await resp.json();
-
-      setUser(data.data);
-    } catch (err) {
-      console.log("err", (err as Error).message);
-    }
-  };
 
   useEffect(() => {
-    if (id) getUser(id);
-  }, [id]);
+    if (id) dispatch(loadUser(id));
+  }, [id, dispatch]);
 
-  if (!user) return <Message text="Загружаем.." />;
+  const onLogOut = () => dispatch(signOut());
+
+  if (!user && loading) return <Message text="Загружаем.." />;
 
   return (
     <PageLayout>
       <Header>
         <NavTool />
         <SideLayout side="start">
-          <UserTitle item={user} />
+          {user && !loading && <UserTitle item={user} />}
         </SideLayout>
-        <AuthTool />
+        <AuthTool onLogOut={onLogOut} />
       </Header>
       <Content>
         <UserContent />

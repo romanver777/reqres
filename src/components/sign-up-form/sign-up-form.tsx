@@ -26,12 +26,11 @@ function SignUpForm({ children, onSignUp }: TSignUpForm) {
   } = useForm<TFormData>();
 
   const onSubmit: SubmitHandler<TFormData> = (data) => {
-    console.log("data", data);
     if (data.password !== data.passwordConfirm) {
       setConfirmPasswordError(true);
       return;
     }
-    // onSignUp(data);
+    onSignUp(data);
   };
 
   return (

@@ -1,10 +1,19 @@
+import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import Protected from "../components/protected/protected";
 import SignUp from "./sign-up/sign-up";
 import Main from "./main/main";
 import User from "./user/user";
+import { useAppDispatch } from "../store/hooks";
+import { init } from "../store/auth/auth";
 
 function App() {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(init());
+  }, [dispatch]);
+
   return (
     <Routes>
       <Route
