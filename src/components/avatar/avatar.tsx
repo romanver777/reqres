@@ -1,5 +1,5 @@
 import style from "./avatar.module.scss";
-import { TUser } from "../../app/main/main";
+import { TUser } from "../../store/user/user";
 
 type TAvatar = {
   item: TUser;
@@ -8,7 +8,6 @@ type TAvatar = {
 };
 
 function Avatar({ item, width, height }: TAvatar) {
-
   return (
     <div className={style.Avatar}>
       <img

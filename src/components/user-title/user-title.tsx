@@ -1,5 +1,5 @@
 import style from "./user-title.module.scss";
-import type { TUser } from "../../app/main/main";
+import type { TUser } from "../../store/user/user";
 import Avatar from "../avatar/avatar";
 
 type TUserTitle = {

@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../../store/hooks";
 import Message from "../message/message";
 
 type TProtected = {
@@ -9,8 +10,8 @@ type TProtected = {
 
 function Protected({ children, redirect }: TProtected) {
   const navigate = useNavigate();
-  const isAuth = false;
-  const loading = false; 
+  const isAuth = useAppSelector((state) => state.auth.isAuth);
+  const loading = useAppSelector((state) => state.auth.loading);
 
   useEffect(() => {
     if (!isAuth && !loading) {

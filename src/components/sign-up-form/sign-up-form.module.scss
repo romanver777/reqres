@@ -11,6 +11,10 @@
   flex-direction: column;
   gap: 24px;
 
+  &_loading{
+    opacity: 0.5;
+  }
+
   &__fields {
     display: flex;
     flex-direction: column;

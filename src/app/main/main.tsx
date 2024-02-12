@@ -1,4 +1,7 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { loadUsers } from "../../store/users/users";
+import { signOut } from "../../store/auth/auth";
 import PageLayout from "../../components/layouts/page-layout/page-layout";
 import Header from "../../components/header/header";
 import MainTitle from "../../components/main-title/main-title";
@@ -9,6 +12,7 @@ import List from "../../components/list/list";
 import UserCard from "../../components/user-card/user-card";
 import Pagination from "../../components/pagination/pagination";
 import SideLayout from "../../components/layouts/side-layout/side-layout";
+import Spinner from "../../components/spinner/spinner";
 
 export type TUser = {
   id: number;
@@ -19,22 +23,15 @@ export type TUser = {
 };
 
 function Main() {
-  const [users, setUsers] = useState<TUser[]>([]);
-
-  const getUsers = async () => {
-    try {
-      const resp = await fetch("https://reqres.in/api/users");
-      const data = await resp.json();
-
-      setUsers(data.data);
-    } catch (err) {
-      console.log("err", (err as Error).message);
-    }
-  };
+  const dispatch = useAppDispatch();
+  const users = useAppSelector((state) => state.users.data);
+  const loading = useAppSelector((state) => state.users.loading);
 
   useEffect(() => {
-    getUsers();
-  }, []);
+    dispatch(loadUsers());
+  }, [dispatch]);
+
+  const onLogOut = () => dispatch(signOut());
 
   const renders = {
     userCard: (item: TUser) => <UserCard key={item.id} item={item} />,
@@ -46,12 +43,14 @@ function Main() {
         <SideLayout>
           <MainTitle />
         </SideLayout>
-        <AuthTool />
+        <AuthTool onLogOut={onLogOut} />
       </Header>
       <Content>
         <MainContent>
-          <List items={users} renderItem={renders.userCard} />
-          <Pagination />
+          <Spinner loading={loading}>
+            <List items={users} renderItem={renders.userCard} />
+            <Pagination />
+          </Spinner>
         </MainContent>
       </Content>
     </PageLayout>
