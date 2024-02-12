@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import PageLayout from "../../components/page-layout/page-layout";
+import PageLayout from "../../components/layouts/page-layout/page-layout";
 import Header from "../../components/header/header";
 import NavTool from "../../components/nav-tool/nav-tool";
 import UserTitle from "../../components/user-title/user-title";
 import AuthTool from "../../components/auth-tool/auth-tool";
 import Content from "../../components/content/content";
-import SideLayout from "../../components/side-layout/side-layout";
+import SideLayout from "../../components/layouts/side-layout/side-layout";
 import UserContent from "../../components/user-content/user-content";
+import Message from "../../components/message/message";
 import type { TUser } from "../main/main";
 
 function User() {
@@ -29,7 +30,7 @@ function User() {
     if (id) getUser(id);
   }, [id]);
 
-  if (!user) return <div style={{ textAlign: "center" }}>Загружаем..</div>;
+  if (!user) return <Message text="Загружаем.." />;
 
   return (
     <PageLayout>
