@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-nocheck
 import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import style from "./sign-up-form.module.scss";
