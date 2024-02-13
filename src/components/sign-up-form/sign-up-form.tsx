@@ -12,11 +12,12 @@ export type TFormData = {
 };
 
 type TSignUpForm = {
+  error: string | null;
   children: React.ReactNode;
   onSignUp: (data: TFormData) => void;
 };
 
-function SignUpForm({ children, onSignUp }: TSignUpForm) {
+function SignUpForm({ error, children, onSignUp }: TSignUpForm) {
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
 
   const {
@@ -37,6 +38,7 @@ function SignUpForm({ children, onSignUp }: TSignUpForm) {
     <form className={style.SignUpForm}>
       <div className={style.SignUpForm__fields}>
         <h2 className={style.SignUpForm__title}>Регистрация</h2>
+        {error && <div className={style.SignUpForm__errorMsg}>{error}</div>}
         {React.Children.map(children, (child) => {
           return child.props.name
             ? React.createElement(child.type, {

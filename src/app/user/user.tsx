@@ -25,14 +25,14 @@ function User() {
 
   const onLogOut = () => dispatch(signOut());
 
-  if (!user && loading) return <Message text="Загружаем.." />;
+  if (loading) return <Message text="Загружаем.." />;
 
   return (
     <PageLayout>
       <Header>
         <NavTool />
         <SideLayout side="start">
-          {user && !loading && <UserTitle item={user} />}
+          <UserTitle item={user} />
         </SideLayout>
         <AuthTool onLogOut={onLogOut} />
       </Header>

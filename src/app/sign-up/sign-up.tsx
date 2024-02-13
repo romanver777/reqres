@@ -8,7 +8,6 @@ import SignUpLayout from "../../components/layouts/sign-up-layout/sign-up-layout
 import SignUpForm from "../../components/sign-up-form/sign-up-form";
 import Input from "../../components/input/input";
 import Spinner from "../../components/spinner/spinner";
-import Message from "../../components/message/message";
 import type { TFormData } from "../../components/sign-up-form/sign-up-form";
 
 function SignUp() {
@@ -16,6 +15,7 @@ function SignUp() {
   const navigate = useNavigate();
   const isAuth = useAppSelector((state) => state.auth.isAuth);
   const loading = useAppSelector((state) => state.auth.loading);
+  const error = useAppSelector((state) => state.auth.error);
 
   useEffect(() => {
     if (isAuth) navigate("/");
@@ -25,12 +25,10 @@ function SignUp() {
     dispatch(auth(data));
   };
 
-  if (!isAuth && loading) return <Message text="Загружаем.." />;
-
   return (
     <SignUpLayout>
       <Spinner loading={loading}>
-        <SignUpForm onSignUp={onSendForm}>
+        <SignUpForm onSignUp={onSendForm} error={error}>
           <Input label="Имя" name="name" type="text" max={15} />
           <Input label="Электронная почта" name="email" type="text" />
           <Input
