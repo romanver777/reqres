@@ -9,6 +9,7 @@ export const store = configureStore({
     users: usersReducer,
     user: userReducer,
   },
+  devTools: false,
 });
 
 export type TRootState = ReturnType<typeof store.getState>;

@@ -8,7 +8,6 @@ export type TUser = {
   avatar: string;
 };
 
-
 interface IUsersState {
   data: TUser;
   loading: boolean;
@@ -18,10 +17,10 @@ interface IUsersState {
 const initialState: IUsersState = {
   data: {
     id: null,
-    email: '',
-    first_name: '',
-    last_name: '',
-    avatar: '',
+    email: "",
+    first_name: "",
+    last_name: "",
+    avatar: "",
   },
   loading: true,
   error: null,
@@ -30,7 +29,6 @@ const initialState: IUsersState = {
 export const loadUser = createAsyncThunk(
   "loadUser",
   async (id: string, thunkApi) => {
-
     try {
       const resp = await fetch(`https://reqres.in/api/users/${id}`);
 
@@ -46,7 +44,9 @@ export const loadUser = createAsyncThunk(
 export const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    deleteUser: () => initialState,
+  },
   extraReducers: (builder) => {
     builder
       .addCase(loadUser.pending, (state) => {
@@ -64,4 +64,5 @@ export const userSlice = createSlice({
   },
 });
 
+export const { deleteUser } = userSlice.actions;
 export default userSlice.reducer;
