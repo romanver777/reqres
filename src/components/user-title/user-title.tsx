@@ -9,7 +9,7 @@ type TUserTitle = {
 function UserTitle({ item }: TUserTitle) {
   return (
     <div className={style.UserTitle}>
-      <Avatar item={item} width="187" height="187" />
+      <Avatar item={item} size="big"/>
       <div className={style.UserTitle__text}>
         <h1
           className={style.UserTitle__name}

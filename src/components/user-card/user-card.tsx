@@ -11,7 +11,9 @@ type TUserProps = {
 function UserCard({ item }: TUserProps) {
   return (
     <li className={style.UserCard}>
-      <Avatar item={item} width="124" height="124" />
+      <Link to={`/user/${item.id}`}>
+        <Avatar item={item} size="small" />
+      </Link>
       <Link
         to={`/user/${item.id}`}
         className={style.UserCard__name}
