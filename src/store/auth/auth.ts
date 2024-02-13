@@ -32,11 +32,14 @@ export const auth = createAsyncThunk(
         body: JSON.stringify({ email, password }),
       });
 
-      if (!resp.ok) return thunkApi.rejectWithValue("Что-то пошло не так...");
+      if (!resp.ok) {
+        const data = await resp.json();
+        return thunkApi.rejectWithValue(data.error);
+      }
 
       return resp.json();
     } catch (err) {
-      thunkApi.rejectWithValue("failed to load data");
+      thunkApi.rejectWithValue(err);
     }
   }
 );
@@ -77,7 +80,7 @@ export const authSlice = createSlice({
       })
       .addCase(auth.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || "Что-то пошло не так";
+        state.error = action.payload as string;
       });
   },
 });
