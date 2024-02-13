@@ -10,11 +10,11 @@ export type TUser = {
 
 export type TUsers = {
   data: TUser[];
-  page: number | null;
+  page: number;
   per_page: number | null;
   total: number | null;
-  total_pages: number | null;
-}
+  total_pages: number;
+};
 
 interface IUsersState extends TUsers {
   loading: boolean;
@@ -23,20 +23,19 @@ interface IUsersState extends TUsers {
 
 const initialState: IUsersState = {
   data: [],
-  page: null,
+  page: 1,
   per_page: null,
   total: null,
-  total_pages: null,
+  total_pages: 1,
   loading: true,
   error: null,
 };
 
 export const loadUsers = createAsyncThunk(
   "loadUsers",
-  async (_, thunkApi) => {
-
+  async (page: number, thunkApi) => {
     try {
-      const resp = await fetch("https://reqres.in/api/users");
+      const resp = await fetch(`https://reqres.in/api/users?page=${page}`);
 
       if (!resp.ok) return thunkApi.rejectWithValue("Что-то пошло не так...");
 
@@ -50,7 +49,9 @@ export const loadUsers = createAsyncThunk(
 export const usersSlice = createSlice({
   name: "users",
   initialState,
-  reducers: {},
+  reducers: {
+    deleteUsers: () => initialState,
+  },
   extraReducers: (builder) => {
     builder
       .addCase(loadUsers.pending, (state) => {
@@ -58,12 +59,15 @@ export const usersSlice = createSlice({
         state.error = null;
       })
       .addCase(loadUsers.fulfilled, (state, action) => {
-        state.data = action.payload.data;
-        state.page = action.payload.page;
-        state.per_page = action.payload.per_page;
-        state.total = action.payload.total;
-        state.total_pages = action.payload.total_pages;
+        const { data, page, per_page, total, total_pages } = action.payload;
+
         state.loading = false;
+
+        state.data = [...state.data, ...data];
+        state.page = page;
+        state.per_page = per_page;
+        state.total = total;
+        state.total_pages = total_pages;
       })
       .addCase(loadUsers.rejected, (state, action) => {
         state.loading = false;
@@ -72,4 +76,5 @@ export const usersSlice = createSlice({
   },
 });
 
+export const { deleteUsers } = usersSlice.actions;
 export default usersSlice.reducer;

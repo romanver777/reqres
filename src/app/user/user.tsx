@@ -1,7 +1,8 @@
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { loadUser } from "../../store/user/user";
+import { loadUser, deleteUser } from "../../store/user/user";
+import { deleteUsers } from "../../store/users/users";
 import { signOut } from "../../store/auth/auth";
 import PageLayout from "../../components/layouts/page-layout/page-layout";
 import Header from "../../components/header/header";
@@ -15,6 +16,8 @@ import Message from "../../components/message/message";
 
 function User() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const user = useAppSelector((state) => state.user.data);
   const loading = useAppSelector((state) => state.user.loading);
   const { id } = useParams();
@@ -23,14 +26,23 @@ function User() {
     if (id) dispatch(loadUser(id));
   }, [id, dispatch]);
 
-  const onLogOut = () => dispatch(signOut());
+  const onLogOut = () => {
+    dispatch(signOut());
+    dispatch(deleteUsers());
+    dispatch(deleteUser());
+  };
+
+  const onBack = () => {
+    dispatch(deleteUsers());
+    navigate(-1);
+  }
 
   if (loading) return <Message text="Загружаем.." />;
 
   return (
     <PageLayout>
       <Header>
-        <NavTool />
+        <NavTool onBackClick={onBack} />
         <SideLayout side="start">
           <UserTitle item={user} />
         </SideLayout>

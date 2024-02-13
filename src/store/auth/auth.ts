@@ -56,12 +56,10 @@ export const authSlice = createSlice({
       }
       state.loading = false;
     },
-    signOut: (state) => {
+    signOut: () => {
       localStorage.removeItem("token");
 
-      state.isAuth = false;
-      state.id = null;
-      state.token = null;
+      return { ...initialState, loading: false };
     },
   },
   extraReducers: (builder) => {

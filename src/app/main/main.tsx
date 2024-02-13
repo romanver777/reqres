@@ -1,6 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { loadUsers } from "../../store/users/users";
+import { loadUsers, deleteUsers } from "../../store/users/users";
+import { deleteUser } from "../../store/user/user";
 import { signOut } from "../../store/auth/auth";
 import PageLayout from "../../components/layouts/page-layout/page-layout";
 import Header from "../../components/header/header";
@@ -24,14 +25,25 @@ export type TUser = {
 
 function Main() {
   const dispatch = useAppDispatch();
+
   const users = useAppSelector((state) => state.users.data);
   const loading = useAppSelector((state) => state.users.loading);
+  const currentPage = useAppSelector((state) => state.users.page);
+  const totalPages = useAppSelector((state) => state.users.total_pages);
+
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
-    dispatch(loadUsers());
-  }, [dispatch]);
+      dispatch(loadUsers(page));
+  }, [page, dispatch]);
 
-  const onLogOut = () => dispatch(signOut());
+  const onLoad = () => setPage(page + 1);
+
+  const onLogOut = () => {
+    dispatch(signOut());
+    dispatch(deleteUsers());
+    dispatch(deleteUser());
+  };
 
   const renders = {
     userCard: (item: TUser) => <UserCard key={item.id} item={item} />,
@@ -49,7 +61,10 @@ function Main() {
         <MainContent>
           <Spinner loading={loading}>
             <List items={users} renderItem={renders.userCard} />
-            <Pagination />
+            <Pagination
+              onLoadItems={onLoad}
+              isShow={currentPage < totalPages}
+            />
           </Spinner>
         </MainContent>
       </Content>
