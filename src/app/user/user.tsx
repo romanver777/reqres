@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { loadUser, deleteUser } from "../../store/user/user";
 import { deleteUsers } from "../../store/users/users";
@@ -17,6 +17,7 @@ import Message from "../../components/message/message";
 function User() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const user = useAppSelector((state) => state.user.data);
   const loading = useAppSelector((state) => state.user.loading);
@@ -34,8 +35,13 @@ function User() {
 
   const onBack = () => {
     dispatch(deleteUsers());
-    navigate(-1);
-  }
+
+    if (location.state?.back) {
+      navigate(location.state.back);
+    } else {
+      navigate("/");
+    }
+  };
 
   if (loading) return <Message text="Загружаем.." />;
 

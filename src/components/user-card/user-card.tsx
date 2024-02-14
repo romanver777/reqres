@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import style from "./user-card.module.scss";
 import type { TUser } from "../../app/main/main";
 import likeIcon from "../../assets/like.svg";
@@ -9,13 +9,16 @@ type TUserProps = {
 };
 
 function UserCard({ item }: TUserProps) {
+  const location = useLocation();
+
   return (
     <li className={style.UserCard}>
-      <Link to={`/user/${item.id}`}>
+      <Link to={`/user/${item.id}`} state={{ back: location.pathname }}>
         <Avatar item={item} size="small" />
       </Link>
       <Link
         to={`/user/${item.id}`}
+        state={{ back: location.pathname }}
         className={style.UserCard__name}
       >{`${item.first_name} ${item.last_name}`}</Link>
       <div className={style.UserCard__likeBlock}>
