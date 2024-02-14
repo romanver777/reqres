@@ -13,14 +13,16 @@ function UserCard({ item }: TUserProps) {
 
   return (
     <li className={style.UserCard}>
-      <Link to={`/user/${item.id}`} state={{ back: location.pathname }}>
-        <Avatar item={item} size="small" />
-      </Link>
-      <Link
-        to={`/user/${item.id}`}
-        state={{ back: location.pathname }}
-        className={style.UserCard__name}
-      >{`${item.first_name} ${item.last_name}`}</Link>
+      <div className={style.UserCard__links}>
+        <Link to={`/user/${item.id}`} state={{ back: location.pathname }}>
+          <Avatar item={item} size="small" />
+        </Link>
+        <Link
+          to={`/user/${item.id}`}
+          state={{ back: location.pathname }}
+          className={style.UserCard__name}
+        >{`${item.first_name} ${item.last_name}`}</Link>
+      </div>
       <div className={style.UserCard__likeBlock}>
         <button className={style.UserCard__likeBtn}>
           <img
